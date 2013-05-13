@@ -44,8 +44,21 @@ describe VtAPI do
     it "should connect to 'https://www.virustotal.com/vtapi/v2/file/report'" do
       stub_request(:post, api_url)
       .with(:body => {'resource' => resource, 'apikey' => apikey} )
-      .to_return(:body => sample_response)
+      .to_return(:body => sample_response, :status => 200)
       subject
+    end
+
+    context 'when server returns 204' do
+      it do
+        stub_request(:post, api_url).to_return(:status => 204)
+        expect{ subject }.to raise_error(VtAPI::ExceedAPILimit)
+      end
+    end
+    context 'when server returns 403' do
+      it do
+        stub_request(:post, api_url).to_return(:status => 403)
+        expect{ subject }.to raise_error(VtAPI::AuthError)
+      end
     end
   end
 end
