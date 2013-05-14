@@ -33,6 +33,6 @@ class VtAPI
         resp.return!(req, result, &block)
       end
     end
-    JSON.parse(resp)
+    Response.new(resp.body)
   end
 end
