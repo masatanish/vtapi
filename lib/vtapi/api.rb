@@ -1,4 +1,5 @@
 require 'rest-client'
+require 'tempfile'
 require 'json'
 
 class VtAPI
@@ -12,7 +13,18 @@ class VtAPI
   end
 
   def file_scan(data)
-    http_post('file/scan', data: data, multipart: true)
+    # TODO: set filename or file path
+    tmp = Tempfile.open('tmp')
+    tmp.write data
+    def tmp.content_type
+      'application/octet-stream'
+    end
+    tmp.pos=0
+    http_post('file/scan', file: tmp, multipart: true)
+  end
+
+  def file_rescan(resource)
+    http_post('file/rescan', resource: resource)
   end
 
   def file_report(resource)

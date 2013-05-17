@@ -25,7 +25,7 @@ describe VtAPI do
     end
     it 'should include data part in body' do
       stub_request(:post, api_url)
-      .with(:body => /name="data"\r\n/ )
+      .with(:body => /name="file"; filename="tmp.*\r\n/ )
       .to_return(:body => sample_response)
       subject
     end
@@ -36,6 +36,20 @@ describe VtAPI do
       subject
     end
   end
+
+  describe '#file_rescan' do
+    let(:sample_response) { '{}' }
+    let(:api_url) { 'https://www.virustotal.com/vtapi/v2/file/rescan' }
+    let(:resource) { 'ff' * 32 }
+    subject { api.file_rescan(resource) }
+    it "should connect to 'https://www.virustotal.com/vtapi/v2/file/rescan'" do
+      stub_request(:post, api_url)
+      .with(:body => {'resource' => resource, 'apikey' => apikey} )
+      .to_return(:body => sample_response, :status => 200)
+      subject
+    end
+  end
+
   describe '#file_report' do
     let(:sample_response) { '{}' }
     let(:api_url) { 'https://www.virustotal.com/vtapi/v2/file/report' }
