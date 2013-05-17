@@ -12,9 +12,7 @@ class VtAPI
           end
         }
       end
-      if @json.has_key? 'scan_date'
-        @json['scan_date'] = Time.parse(@json['scan_date'] + "UTC")
-      end
+      @json['scan_date'] = Time.parse(@json['scan_date'] + "UTC") if @json.has_key? 'scan_date'
     end
 
     def keys
@@ -27,6 +25,10 @@ class VtAPI
 
     def positive_brands
       @json.fetch('scans', {}).select{|k,v| v['detected'] }.keys
+    end
+
+    def scan_results
+      Hash[@json.fetch('scans', {}).map{|k,v| [k, v['result']] }]
     end
 
     def [](key)

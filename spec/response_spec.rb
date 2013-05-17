@@ -52,6 +52,11 @@ describe VtAPI::Response do
       subject { response.positive_threats }
       it { expect(subject).to eq({"Symantec"=>"Android.ZertSecurity", "Kaspersky"=>"HEUR:Trojan-Banker.AndroidOS.Zitmo.a"}) }
     end
+
+    describe '#scan_results' do
+      subject { response.scan_results }
+      it { expect(subject).to eq({"McAfee"=>nil, "Symantec"=>"Android.ZertSecurity", "Kaspersky"=>"HEUR:Trojan-Banker.AndroidOS.Zitmo.a", "TrendMicro"=>nil, "Microsoft"=>nil}) }
+    end
   end
 
   context 'with no scan result' do
