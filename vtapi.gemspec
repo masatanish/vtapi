@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["masatanish@gmail.com"]
   spec.description   = %q{gem for VirusTotal Public API version2.0.}
   spec.summary       = %q{gem for VirusTotal Public API version2.0.}
-  spec.homepage      = "https:://github.com/masatanish/vtapi"
+  spec.homepage      = "https://github.com/masatanish/vtapi"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
