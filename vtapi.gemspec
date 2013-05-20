@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = Vtapi::VERSION
   spec.authors       = ["masatanish"]
   spec.email         = ["masatanish@gmail.com"]
-  spec.description   = %q{Ruby gem library for VirusTotal Public API version2.0.}
-  spec.summary       = %q{Ruby gem library for VirusTotal Public API version2.0.}
+  spec.description   = %q{gem for VirusTotal Public API version2.0.}
+  spec.summary       = %q{gem for VirusTotal Public API version2.0.}
   spec.homepage      = "https:://github.com/masatanish/vtapi"
   spec.license       = "MIT"
 
