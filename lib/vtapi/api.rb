@@ -24,10 +24,18 @@ class VtAPI
   end
 
   def file_rescan(resource)
+    if resource.is_a? Array
+      raise 'limit is up to 25 items' if resource.size > 25
+      resource = resource.join(', ')
+    end
     http_post('file/rescan', resource: resource)
   end
 
   def file_report(resource)
+    if resource.is_a? Array
+      raise 'limit is up to 4 items' if resource.size > 4
+      resource = resource.join(', ')
+    end
     http_post('file/report', resource: resource)
   end
 
@@ -45,6 +53,6 @@ class VtAPI
         resp.return!(req, result, &block)
       end
     end
-    Response.new(resp.body)
+    Response.parse(resp.body)
   end
 end

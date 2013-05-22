@@ -5,7 +5,9 @@ describe VtAPI::Response do
     let(:sample_response) {
       "{\"scans\":{\"McAfee\":{\"detected\":false,\"version\":\"5.400.0.1158\",\"result\":null,\"update\":\"20130512\"},\"Symantec\":{\"detected\":true,\"version\":\"20121.3.0.76\",\"result\":\"Android.ZertSecurity\",\"update\":\"20130512\"},\"Kaspersky\":{\"detected\":true,\"version\":\"9.0.0.837\",\"result\":\"HEUR:Trojan-Banker.AndroidOS.Zitmo.a\",\"update\":\"20130512\"},\"TrendMicro\":{\"detected\":false,\"version\":\"9.740.0.1012\",\"result\":null,\"update\":\"20130512\"},\"Microsoft\":{\"detected\":false,\"version\":\"1.9402\",\"result\":null,\"update\":\"20130512\"}},\"scan_id\":\"00ce460c8b337110912066f746731a916e85bf1d7f4b44f09ca3cc39f9b52a98-1368320515\",\"sha1\":\"e1b727b3e9336033606df79eeba03dd218b56c20\",\"resource\":\"00ce460c8b337110912066f746731a916e85bf1d7f4b44f09ca3cc39f9b52a98\",\"response_code\":1,\"scan_date\":\"2013-05-12 01:01:55\",\"permalink\":\"https://www.virustotal.com/file/00ce460c8b337110912066f746731a916e85bf1d7f4b44f09ca3cc39f9b52a98/analysis/1368320515/\",\"verbose_msg\":\"Scan finished, scan information embedded in this object\",\"total\":46,\"positives\":22,\"sha256\":\"00ce460c8b337110912066f746731a916e85bf1d7f4b44f09ca3cc39f9b52a98\",\"md5\":\"1cf41bdc0fdd409774eb755031a6f49d\"}"
     }
-    let(:response) { VtAPI::Response.new(sample_response) }
+    let(:sample_json) { JSON.parse(sample_response) }
+    let(:response) { VtAPI::Response.new(sample_json) }
+    
 
     describe '#md5' do
       it { expect(response.md5).to eq '1cf41bdc0fdd409774eb755031a6f49d' }
@@ -66,6 +68,27 @@ describe VtAPI::Response do
 
     describe '#positive_threats' do
       pending 'not implemented yet'
+    end
+  end
+
+  describe '.parse' do
+    subject { VtAPI::Response.parse(response) }
+    context 'assigns single response' do
+      let(:response) { '{"md5":"1cf41bdc0fdd409774eb755031a6f49d"}' }
+      it { expect(subject).to be_a VtAPI::Response }
+      it { expect(subject.md5).to eq "1cf41bdc0fdd409774eb755031a6f49d" }
+    end
+
+    context 'assigns array response' do
+      subject {VtAPI::Response.parse(response) }
+      let(:response) { '[{"md5":"1cf41bdc0fdd409774eb755031a6f49d"}, {"md5":"1eef5bdc64241652f8a0df0c2dc92df6"}]' }
+      it { expect(subject).to be_a Array }
+      it { expect(subject).to have(2).items }
+
+      context 'about first object' do
+        subject {VtAPI::Response.parse(response).first }
+        it { expect(subject).to be_a VtAPI::Response }
+      end
     end
   end
 end

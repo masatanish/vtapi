@@ -3,8 +3,16 @@ require 'time'
 
 class VtAPI
   class Response
-    def initialize(response_body)
-      @json = JSON.parse(response_body)
+    def self.parse(response_body)
+      json = JSON.parse(response_body)
+      if json.is_a? Array
+        return json.map{|e| Response.new(e) }
+      else
+        return Response.new(json)
+      end
+    end
+    def initialize(json)
+      @json = json
       @json.keys.each do |key|
         Response.class_eval {
           define_method key.to_s do |*args|

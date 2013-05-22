@@ -48,6 +48,22 @@ describe VtAPI do
       .to_return(:body => sample_response, :status => 200)
       subject
     end
+
+    context 'assigns 2 resources' do
+      let(:resource) { ['ff' * 32, '00' * 32] }
+      let(:sample_response) { '[{}]' }
+      it "should post resource parameter as comma separete value" do
+        stub_request(:post, api_url)
+        .with(:body => {'resource' => resource.join(', '), 'apikey' => apikey} )
+        .to_return(:body => sample_response, :status => 200)
+        subject
+      end
+    end
+
+    context 'when assign 25 resources(over the limitation)' do
+      let(:resource) { ['ff' * 32] * 25 }
+      it { expect{ subject }.to raise_error }
+    end
   end
 
   describe '#file_report' do
@@ -73,6 +89,20 @@ describe VtAPI do
         stub_request(:post, api_url).to_return(:status => 403)
         expect{ subject }.to raise_error(VtAPI::AuthError)
       end
+    end
+
+    context 'when assign 2 resources' do
+      let(:resource) { ['ff' * 32, '00' * 32] }
+      it "should post resource parameter as comma separete value" do
+        stub_request(:post, api_url)
+        .with(:body => {'resource' => resource.join(', '), 'apikey' => apikey} )
+        .to_return(:body => sample_response, :status => 200)
+        subject
+      end
+    end
+    context 'when assign 5 resources(over the limitation)' do
+      let(:resource) { ['ff' * 32] * 5 }
+      it { expect{ subject }.to raise_error }
     end
   end
 end
