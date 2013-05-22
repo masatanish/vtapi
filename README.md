@@ -37,6 +37,17 @@ puts resp.positives  #  num of positives
 puts resp.scan_results # {"McAfee"=>nil, "Symantec"=>"Android.ZertSecurity", ... }
 ```
 
+### File Report (multiple resources)
+```ruby
+# retrieve file report by file hash(SHA256, SHA1, MD5)
+# up to 4 resources can assign 
+resources = ['00ce460c8b33711091206..', ..]
+resps = api.file_report(resources)
+resps.each do |r|
+  puts "#{r.sha256}: #{r.positives} / #{r.total}" if r.response_code == 1
+end
+```
+
 ### File Upload
 ```ruby
 # read file
