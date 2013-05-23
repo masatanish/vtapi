@@ -138,4 +138,37 @@ describe VtAPI do
     end
   end
 
+  describe '#url_report' do
+    let(:sample_response) { '{}' }
+    let(:api_url) { 'https://www.virustotal.com/vtapi/v2/url/report' }
+    let(:target_url) { 'http://www.foobar.com/' }
+    subject { api.url_report(target_url) }
+
+    it "should connect to 'https://www.virustotal.com/vtapi/v2/url/report'" do
+      stub_request(:post, api_url)
+      .with(:body => {'resource' => target_url, 'apikey' => apikey} )
+      .to_return(:body => sample_response, :status => 200)
+      subject
+    end
+
+    context 'when assign 2 urls' do
+      let(:target_url) { ['http://foobar.com/', 'http://abc.com'] }
+
+      it "should post url parameter which is joined by ', '" do
+        stub_request(:post, api_url)
+        .with(:body => {'resource' => target_url.join(", "), 'apikey' => apikey} )
+        .to_return(:body => sample_response, :status => 200)
+        subject
+      end
+    end
+
+    context 'when assign 5 urls (over the limitation)' do
+      let(:target_url) { ['http://www.foobar.com/'] * 5 }
+
+      it { expect{ subject }.to raise_error }
+    end
+  end
+
+
+
 end
