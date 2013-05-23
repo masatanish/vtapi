@@ -39,6 +39,13 @@ class VtAPI
     http_post('file/report', resource: resource)
   end
 
+  def url_scan(url)
+    if url.is_a? Array
+      raise 'limit is up to 4 items' if url.size > 4
+      url = url.join("\n")
+    end
+    http_post('url/scan', url: url)
+  end
 
   def http_post(path, params = {})
     uri = BASE_URL + path
