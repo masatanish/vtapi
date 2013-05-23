@@ -1,4 +1,4 @@
-# VtAPI
+# VtAPI [![Gem Version](https://badge.fury.io/rb/vtapi.png)](http://badge.fury.io/rb/vtapi)
 
 Ruby gem for VirusTotal Public API v2.0
 
