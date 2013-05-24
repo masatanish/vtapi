@@ -47,8 +47,14 @@ resps.each do |r|
   puts "#{r.sha256}: #{r.positives} / #{r.total}" if r.response_code == 1
 end
 ```
+The following APIs are supported Posting multi resources(URLs).
+* VtAPI#file_report
+* VtAPI#file_rescan
+* VtAPI#url_scan
+* VtAPI#url_report
 
-### File Upload
+
+### File Scan (File Upload)
 ```ruby
 # read file
 data = File.open(some_path, 'rb') {|f| f.read }
@@ -60,20 +66,42 @@ resp = api.file_scan(data)
 puts resp.response_code # 1: OK, 0: result doesn't exist, -2: still queued
 ```
 
+
+### URL Scan
+```ruby
+# upload url
+resp = api.url_scan(url)
+
+# confirm response_code
+puts resp.response_code # 1: OK, 0: result doesn't exist, -2: still queued
+```
+
+
+### URL Report
+```ruby
+# upload url
+resp = api.url_scan(url)
+
+# confirm result
+puts resp.scans
+```
+
+
 ## Features
-### Supported API
+### Support API
 * file/scan
 * file/resan
 * file/report
-
-### not implemented yet
 * url/scan
 * url/report
+
+### Not implemented yet
 * ip-address/report
 * domain/report
 
-### unsupported API
+### Unsupported
 * comments/puts
+
 
 ## Contributing
 
