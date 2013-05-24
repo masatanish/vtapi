@@ -59,6 +59,14 @@ describe VtAPI::Response do
       subject { response.scan_results }
       it { expect(subject).to eq({"McAfee"=>nil, "Symantec"=>"Android.ZertSecurity", "Kaspersky"=>"HEUR:Trojan-Banker.AndroidOS.Zitmo.a", "TrendMicro"=>nil, "Microsoft"=>nil}) }
     end
+
+    describe '#to_s' do
+      subject { response.to_s }
+      it 'should be able to parse as json' do
+         expect{ JSON.parse(subject) }.to_not raise_error
+      end
+      it { expect(JSON.parse(subject).keys).to match_array ['scans', 'scan_id', 'sha1', 'resource', 'response_code', 'scan_date', 'permalink', 'verbose_msg', 'total', 'positives', 'sha256', 'md5'] }
+    end
   end
 
   context 'with no scan result' do
@@ -69,6 +77,7 @@ describe VtAPI::Response do
     describe '#positive_threats' do
       pending 'not implemented yet'
     end
+
   end
 
   describe '.parse' do
@@ -91,4 +100,5 @@ describe VtAPI::Response do
       end
     end
   end
+
 end

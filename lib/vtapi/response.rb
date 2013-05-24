@@ -11,6 +11,7 @@ class VtAPI
         return Response.new(json)
       end
     end
+
     def initialize(json)
       @json = json
       @json.keys.each do |key|
@@ -41,6 +42,10 @@ class VtAPI
 
     def [](key)
       @json.fetch(key.to_s) # raise KeyError when key doesn't exist.
+    end
+
+    def to_s
+      @json.to_json
     end
   end
 end
