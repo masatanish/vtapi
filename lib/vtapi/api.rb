@@ -55,10 +55,24 @@ class VtAPI
     http_post('url/report', resource: url)
   end
 
-  def http_post(path, params = {})
+  def domain_report(domain)
+    raise 'only one domain can be scanned at a time' if domain.is_a? Array
+    http_get('domain/report', domain: domain)
+  end
+
+  def http_query(verb, path, params = { })
     uri = BASE_URL + path
     params['apikey'] = @apikey
-    resp = RestClient.post(uri, params) do |resp, req, result, &block|
+    params =
+      case verb
+      when :get
+        { params: params }
+      when :post
+        params
+      else
+        raise "Unsupported verb: #{verb}"
+      end
+    resp = RestClient.send(verb, uri, params) do |resp, req, result, &block|
       case resp.code
       when 204
         raise ExceedAPILimit, "you exceed the public API request rate limit: key[#{@apikey}]"
@@ -69,5 +83,13 @@ class VtAPI
       end
     end
     Response.parse(resp.body)
+  end
+
+  def http_get(path, params = {})
+    http_query(:get, path, params)
+  end
+
+  def http_post(path, params = {})
+    http_query(:post, path, params)
   end
 end
