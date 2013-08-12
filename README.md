@@ -87,6 +87,26 @@ puts resp.scans
 ```
 
 
+### Domain Report
+```ruby
+# domain
+resp = api.domain_report(domain)
+
+# confirm result
+puts resp.detected_urls
+```
+
+
+### IP address Report
+```ruby
+# IP address
+resp = api.ip_report(ip)
+
+# confirm result
+puts resp.detected_communicating_samples
+```
+
+
 ## Features
 ### Support API
 * file/scan
@@ -94,10 +114,8 @@ puts resp.scans
 * file/report
 * url/scan
 * url/report
-
-### Not implemented yet
-* ip-address/report
 * domain/report
+* ip-address/report
 
 ### Unsupported
 * comments/puts
