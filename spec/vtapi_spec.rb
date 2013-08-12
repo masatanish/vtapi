@@ -169,6 +169,29 @@ describe VtAPI do
     end
   end
 
+  describe '#ip_report' do
+    let(:sample_response) { '{}' }
+    let(:api_url) { 'https://www.virustotal.com/vtapi/v2/ip-address/report?apikey=test%20apikey&ip=8.8.8.8' }
+    let(:target_ip) { '8.8.8.8' }
+    subject { api.ip_report(target_ip) }
 
+    it "should connect to 'https://www.virustotal.com/vtapi/v2/ip-address/report?apikey=test%20apikey&ip=8.8.8.8'" do
+      stub_request(:get, api_url)
+      .to_return(:body => sample_response, :status => 200)
+      subject
+    end
+  end
 
+  describe '#domain_report' do
+    let(:sample_response) { '{}' }
+    let(:api_url) { 'https://www.virustotal.com/vtapi/v2/domain/report?apikey=test%20apikey&domain=8.8.8.8' }
+    let(:target_domain) { '8.8.8.8' }
+    subject { api.domain_report(target_domain) }
+
+    it "should connect to 'https://www.virustotal.com/vtapi/v2/domain/report?apikey=test%20apikey&domain=8.8.8.8'" do
+      stub_request(:get, api_url)
+      .to_return(:body => sample_response, :status => 200)
+      subject
+    end
+  end
 end
