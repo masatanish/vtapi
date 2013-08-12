@@ -55,6 +55,11 @@ class VtAPI
     http_post('url/report', resource: url)
   end
 
+  def ip_report(ip)
+    raise 'only one IP address can be scanned at a time' if ip.is_a? Array
+    http_get('ip-address/report', ip: ip)
+  end
+
   def domain_report(domain)
     raise 'only one domain can be scanned at a time' if domain.is_a? Array
     http_get('domain/report', domain: domain)
